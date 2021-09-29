@@ -1,0 +1,67 @@
+{% extends 'blog_app/base.html'%}
+{% load static %}
+{%block title %}Blog List{%endblock title%}
+<!-- Page Header-->
+{% block bodycontent %}
+        <!-- Page Header-->
+  <header class="masthead" style="background-image: url({% static "blog_app/assets/img/post-bg.jpg" %})">
+      <div class="container position-relative px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="col-md-10 col-lg-8 col-xl-7">
+                  <div class="post-heading">
+                      <h1>{{post.title}}</h1>
+                      <h2 class="subheading">Problems look mighty small from 150 miles up</h2>
+                      <span class="meta">
+                          Posted by
+                          <a href="#!">{{post.author}}</a>
+                          on {{post.created}}
+                      </span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </header>
+
+  <main class="mb-4">
+      <div class="container px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="col-md-10 col-lg-8 col-xl-7">
+                  {% if sent %}
+                    <div class="" id="submitSuccessMessage">
+                        <div class="text-center mb-3">
+                            <div class="fw-bolder text-success">Email Successfully Sent!</div>
+                            <br />
+                            Back to: <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+                        </div>
+                    </div>
+                  {% else %}
+                    <div>
+                      <h2>
+                        Want to get in share this post? Fill out the form below to send to your friends!
+                      </h2>
+                    </div>
+                  {% endif %}
+                  <div class="my-5">
+                      <form id="contactForm" method="post">
+                          {% csrf_token %}
+                          {% for field in form %}
+                            <div class="form-floating">
+                              {{field}}
+                              {{field.label_tag}}
+                              {% if field.errors %}
+                                <div class="text-danger text-sm">{{field.errors}}</div>
+                              {%endif%}
+                            </div>
+                          {% endfor %}
+                          <br />
+                          <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Send</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </main>
+
+  <!-- Post Content-->
+
+{% endblock bodycontent %}
