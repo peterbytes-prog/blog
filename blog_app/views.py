@@ -1,12 +1,16 @@
 from django.shortcuts import render,get_object_or_404, redirect
 from django.views import generic
-from django.views import View
+# from django.views import View
 from django.core.paginator import Paginator, EmptyPage,PageNotAnInteger
 from django.core.mail import send_mail
-from .models import Post, Comment
-from .forms import EmailPostForm, CommentForm, ContactForm
+from .models import Post, Comment, BlogImage
+from .forms import EmailPostForm, CommentForm, ContactForm, PostForm
 from taggit.models import Tag
 from django.db.models import Count
+from django.views.generic.edit import CreateView,UpdateView,FormView
+from django.views.generic.base import TemplateResponseMixin, View
+from django.forms.models import inlineformset_factory
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class AboutView(View):
     def get(self, request):
@@ -103,3 +107,25 @@ def post_share(request,pk):
 
 
 # Create your views here.
+
+class CreatePost(LoginRequiredMixin,TemplateResponseMixin, View):
+    template_name = 'blog_app/edit_post.html'
+    _post = None
+    # images_formset = inlineformset_factory(Post,BlogImage,fields=['image','name'], extra=3,can_delete=True)
+    def dispatch(self,request,pk=None):
+        if pk:
+            self._post = get_object_or_404(Post,pk=pk)
+        return super().dispatch(request,pk)
+    def get(self,request,*args,**kwargs):
+        self.post_form = PostForm(instance=self._post)
+        return self.render_to_response({'post_form': self.post_form})
+    def post(self,request,*args,**kwargs):
+        self.post_form = PostForm(request.POST,request.FILES, instance=self._post)
+        if self.post_form.is_valid():
+            ins = self.post_form.save(commit=False)
+            ins.author = request.user
+            ins.slug = self.post_form.cleaned_data.get('title','').lower().strip().replace(' ','_')
+            ins.save()
+            return redirect('blog_app:post_list')
+        else:
+            return self.render_to_response({'post_form': self.post_form})

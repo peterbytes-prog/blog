@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'taggit',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'crispy_forms',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -125,9 +127,13 @@ STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL ='/media/'
 MEDIA_ROOT=os.path.join(str(BASE_DIR),'media')
+
+X_FRAME_OPTIONS = "SAMEORIGIN"

@@ -1,6 +1,12 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Post
+from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 
+class PostForm(forms.ModelForm):
+    body = forms.CharField(widget=SummernoteWidget(attrs={'summernote':{'width':'100%'}}))
+    class Meta:
+        model = Post
+        fields =['title','subtitle','bgimg','tags','body','status']
 class EmailPostForm(forms.Form):
     name = forms.CharField(max_length=50,widget=forms.TextInput({'class': 'form-control'}))
     email = forms.EmailField(widget=forms.TextInput({'class': 'form-control'}))

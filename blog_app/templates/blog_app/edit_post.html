@@ -1,0 +1,73 @@
+{% extends 'blog_app/base.html'%}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load blog_tags %}
+{%block title %}Create Blog{%endblock title%}
+<!-- Page Header-->
+{% block bodycontent %}
+        <!-- Page Header-->
+  <header class="jumbotron bg-dark" style=" {% if post.bgimg %}
+                                        background-image: url({{post.bgimg.url}})
+                                    {%else%}
+                                      background-image: rgb(150,150,150)
+                                    {%endif%}
+                                      ">
+
+      <div class="container position-relative px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="col-md-10 col-lg-8 col-xl-7">
+                  <div class="post-heading text-light">
+                      <h1>Create New Post</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </header>
+  <!-- Post Content-->
+
+  <div class="container">
+    <form class="row" action="#" method='post' enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="col-xs-12">
+          {{post_form|crispy|safe}}
+      </div>
+      <div class="text-center">
+        <button class="btn btn-info" type="submit" name="button">Save</button>
+      </div>
+
+    </form>
+
+
+  </div>
+
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+  $('#summernote').summernote({
+    height: 200,
+    onImageUpload: function(files, editor, welEditable) {
+      sendFile(files[0], editor, welEditable);
+    }
+  });
+
+  function sendFile(file, editor, welEditable) {
+  //   data = new FormData();
+  //   data.append("file", file);
+  //   $.ajax({
+  //     data: data,
+  //     type: "POST",
+  //     url: "Your URL POST (php)",
+  //     cache: false,
+  //     contentType: false,
+  //     processData: false,
+  //     success: function(url) {
+  //       editor.insertImage(welEditable, url);
+  //     }
+  //   });
+  console.log(file);
+  }
+
+});
+  </script>
+{% endblock bodycontent %}

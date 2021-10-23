@@ -49,6 +49,7 @@ class Post(models.Model):
 class BlogImage(models.Model):
     name = models.CharField(max_length=80)
     image = models.ImageField(upload_to=upload_by_name)
+    blog = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     def __str__(self):

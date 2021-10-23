@@ -19,16 +19,20 @@ from django.contrib.sitemaps.views import sitemap
 from blog_app.sitemaps import PostSiteMap
 from django.conf import settings
 from django.conf.urls.static import static
+from blog_app import views as post
+
 
 sitemaps = {
     'posts':PostSiteMap,
 }
 
 urlpatterns = [
+    path('admin/blog_app/post/add/', post.CreatePost.as_view()),
+    path('admin/blog_app/post/<int:pk>/change/', post.CreatePost.as_view()),
     path('admin/', admin.site.urls),
     path('',include('blog_app.urls',namespace='blog_app')),
     path('sitemap.xml',sitemap,{'sitemaps':sitemaps},name='django.contrib.sitemaps.views.sitemap'),
-
+    path('summernote/',include('django_summernote.urls')),
 ]
 
 if settings.DEBUG:
