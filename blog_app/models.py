@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from PIL import Image
 import os
 def upload_by_name(instance, filename):
     return f"{instance.name}{os.path.splitext(filename)[1]}"
@@ -44,6 +45,12 @@ class Post(models.Model):
         ordering = ("-publish",)
     def __str__(self):
         return self.title
+    def save(self):
+        super().save()
+        img = Image.open(self.bgimg.path)
+        img.thumbnail((750,500))
+        img.save(self.bgimg.path)
+
     def get_absolute_url(self):
         return reverse('blog_app:post_detail',args=[self.pk])
 class BlogImage(models.Model):

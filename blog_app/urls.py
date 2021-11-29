@@ -5,6 +5,7 @@ app_name = 'blog_app'
 
 urlpatterns =[
     path('',views.PostListView.as_view(),name='post_list'),
+    path('create/', views.CreatePost.as_view()),
     path('tag/<slug:tag_slug>/',views.PostListView.as_view(),name='post_list_by_tag'),
     path('<int:pk>/',views.PostDetailView.as_view(),name='post_detail'),
     path('latest/',views.PostDetailView.as_view(),name='latest_post_detail'),
@@ -13,3 +14,6 @@ urlpatterns =[
     path('about/',views.AboutView.as_view(),name='about_page'),
     path('contact/',views.ContactView.as_view(),name='contact_page')
 ]
+
+# path('admin/blog_app/post/add/', post.CreatePost.as_view()),
+# path('admin/blog_app/post/<int:pk>/change/', post.CreatePost.as_view()),
